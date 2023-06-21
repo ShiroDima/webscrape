@@ -11,6 +11,7 @@ class ScrapersItem(Item):
     # name = scrapy.Field()
     pass
 
+
 class WalmartScraperItem(Item):
     # define the fields for your item here like:
     keyword = Field()
@@ -27,3 +28,25 @@ class WalmartScraperItem(Item):
     thumbnailUrl = Field()
     price = Field()
     currencyUnit = Field()
+
+
+class KohlScraperItem(Item):
+    # define the fields for your item here like:
+    name = Field()
+    url = Field()
+    price = Field()
+    currencyUnit = Field()
+
+    # keyword = Field()
+    # page = Field()
+    # position = Field()
+    # id = Field()
+    # type = Field()
+    # brand = Field()
+    # averageRating = Field()
+    # manufacturerName = Field()
+    # shortDescription = Field()
+    # thumbnailUrl = Field()
+    # price = Field()
+    # currencyUnit = Field()
+
