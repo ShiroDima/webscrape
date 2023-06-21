@@ -1,0 +1,8 @@
+# WebScrape
+
+
+```
+
+scrapy crawl [scrapername]
+
+```
