@@ -53,10 +53,12 @@ COOKIES_ENABLED = False
 DOWNLOADER_MIDDLEWARES = {
    "scrapers.middlewares.ScrapersDownloaderMiddleware": 543,
    "scrapy.downloadermiddlewares.retry.RetryMiddleware": 550,
+   }
+
    # 'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
    # 'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
    # 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 400, 
-}
+# }
 
 # list of proxies
 # ROTATING_PROXY_LIST = [
@@ -73,9 +75,11 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "scrapers.pipelines.ScrapersPipeline": 300,
-#}
+MONGO_URI = "mongodb://localhost:27017"
+MONGO_DATABASE = "webscrape"
+ITEM_PIPELINES = {
+   "scrapers.pipelines.MongoPipeline": 400,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

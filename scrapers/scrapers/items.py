@@ -32,20 +32,20 @@ class WalmartScraperItem(Item):
 
 class KohlScraperItem(Item):
     # define the fields for your item here like:
+    keyword = Field()
+    page = Field()
     name = Field()
     url = Field()
     price = Field()
     currencyUnit = Field()
-
-    # keyword = Field()
-    # page = Field()
-    # position = Field()
+    shortDescription = Field()
+    position = Field()
+    
     # id = Field()
     # type = Field()
     # brand = Field()
     # averageRating = Field()
     # manufacturerName = Field()
-    # shortDescription = Field()
     # thumbnailUrl = Field()
     # price = Field()
     # currencyUnit = Field()

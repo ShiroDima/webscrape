@@ -6,11 +6,15 @@ from ..items import WalmartScraperItem
 
 
 headers = {"User-Agent": "Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"}
+BASE_URL = 'https://www.walmart.com'
 
 
 class WalmartSpider(scrapy.Spider):
     name = "walmart"
-
+    custom_settings = {
+        'COLLECTION_NAME' : 'walmart'
+    }
+    
     def start_requests(self):
         keyword_list = ['laptop']  # , 'phones', 'grills', 'household items']
         for keyword in keyword_list:
@@ -35,8 +39,7 @@ class WalmartSpider(scrapy.Spider):
             # Request Product Page
             product_list = json_blob["props"]["pageProps"]["initialData"]["searchResult"]["itemStacks"][0]["items"]
             for idx, product in enumerate(product_list):
-                # if product.get('__typename') == 'Product':
-                walmart_product_url = 'https://www.walmart.com' + product.get('canonicalUrl', '').split('?')[0]
+                walmart_product_url = BASE_URL + product.get('canonicalUrl', '').split('?')[0]
                 yield scrapy.Request(url=walmart_product_url, 
                                     callback=self.parse_product_data,
                                     meta={'keyword': keyword, 'page': page, 'position': idx + 1},
@@ -44,11 +47,12 @@ class WalmartSpider(scrapy.Spider):
 
             # Request Next Page
             if page == 1:
-                total_product_count = json_blob["props"]["pageProps"][
-                    "initialData"]["searchResult"]["itemStacks"][0]["count"]
-                max_pages = math.ceil(total_product_count / 40)
-                if max_pages > 5:
-                    max_pages = 5
+                # total_product_count = json_blob["props"]["pageProps"][
+                #     "initialData"]["searchResult"]["itemStacks"][0]["count"]
+                # max_pages = math.ceil(total_product_count / 40)
+                # if max_pages > 5:
+                #     max_pages = 5
+                max_pages = 5
                 for p in range(2, max_pages):
                     payload = {'q': keyword, 'sort': 'best_seller',
                                'page': p, 'affinityOverride': 'default'}
@@ -70,7 +74,7 @@ class WalmartSpider(scrapy.Spider):
                 keyword=response.meta['keyword'],
                 page=response.meta['page'],
                 position=response.meta['position'],
-                url=self.create_walmart_product_url(raw_product_data),
+                url=BASE_URL + raw_product_data.get('canonicalUrl', '').split('?')[0],
                 id=raw_product_data.get('id'),
                 type=raw_product_data.get('type'),
                 name=raw_product_data.get('name'),
@@ -83,9 +87,6 @@ class WalmartSpider(scrapy.Spider):
                     'price'),
                 currencyUnit=raw_product_data['priceInfo']['currentPrice'].get(
                     'currencyUnit'),)
-            # item = {"name": raw_product_data.get('name'),
-            #         "price": raw_product_data['priceInfo']['currentPrice'].get('price'),
-            #         "currency": raw_product_data['priceInfo']['currentPrice'].get('currencyUnit')}
             yield item
 
 
