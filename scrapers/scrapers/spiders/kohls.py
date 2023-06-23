@@ -1,73 +1,122 @@
 import scrapy
-import requests
 from ..items import KohlScraperItem
-from scrapy.selector import Selector
+import re
+from scrapy.shell import inspect_response
+
 
 
 BASE_URL = "https://www.kohls.com"
-headers = {
-    'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36'
-}
-
 
 class KohlSpider(scrapy.Spider):
     name = "kohls"
-    custom_settings = {
-        'COLLECTION_NAME' : 'kohls'
-    }
+    allowed_domains = ["kohls.com"]
+    # start_urls = [BASE_URL+"/content/navigation.html"]
+    
 
     def start_requests(self):
-        keyword_list = ['shoes', 'babies', 'women', 'men', 'home']
-        for keyword in keyword_list:
-            kohl_search_url = f'{BASE_URL}/search.jsp?submit-search=web-regular&search={keyword}&spa=1&kls_sbp=14364143033523432012112151531737783468'
-            yield scrapy.Request(url=kohl_search_url, 
-                                 callback=self.parse_search_results, 
-                                 meta={'keyword': keyword, 'page': 1},
-                                 headers=headers)
+        
+    #     
+        yield scrapy.Request(url=BASE_URL+"/content/navigation.html", callback=self.parse)
 
-    def parse_search_results(self, response):
-        page = response.meta['page']
-        keyword = response.meta['keyword']
+    def parse(self, response):
+        links = self._parse_links(response)
 
-        # Request Product Page
-        product_list = response.css("div.product-description")
-        for idx, product in enumerate(product_list):
-            kohl_product_url = BASE_URL + product.css(".prod_nameBlock p::attr(rel)").get().strip()
-            name = product.css(".prod_nameBlock p::text").get().strip()
-            try:
-                price = product.css(".prod_price_amount::text").get()
-            except:
-                price = product.css(".prod_price_amount red_color::text").get()
-            
-            # clean price
-            price = price.replace("$", "").replace(",", "").split("-")[0].strip()
+        # yield {
+        #     "text": links
+        # }
 
-            item = KohlScraperItem(
-                keyword=keyword,
-                page=page,
-                name=name,
-                url=kohl_product_url,
-                price=price,
-                currencyUnit="dollars",
-                shortDescription=self.get_product_description(kohl_product_url),
-                position=idx,
+        for link in links:
+            yield scrapy.Request(
+                url = BASE_URL+link,
+                callback=self._iter_products
             )
-            yield item
+            # for product in products:
+            #     # yield  self.parse_product(product)
+            #     yield product
+            # yield {
+            #     'link': link
+            # }
 
-            # Request Next Page
-            if page == 1:
-                max_pages = 5
-                for p in range(2, max_pages):
-                    kohl_search_url = f'{BASE_URL}/search.jsp?submit-search=web-regular&search={keyword}&spa=1&kls_sbp=14364143033523432012112151531737783468'
-                    kohl_search_url += f"&sks=true&PPP=48&WS={48*p}&S=1"
-                    yield scrapy.Request(url=kohl_search_url, 
-                                         callback=self.parse_search_results, 
-                                         meta={'keyword': keyword, 'page': p},
-                                         headers=headers)
-                    
-    def get_product_description(self, product_url):
-        response = requests.get(url=product_url, headers=headers)
-        sel = Selector(response=response)
-        description = sel.xpath('//div[@id="productDetailsTabContent"]//p/text()').get().strip()
-        return description
+        # for category in categories:
+        # yield {
+            
+        #     # 'text': response.xpath('//h3/a/@href').getall()
+        #     'text': response.selector.xpath('//a[not(contains(@class, "navigation-item-link"))]/@href').getall()
+        # }
+        # with open('image.png', 'wb') as image_file:
+        #     image_file.write(response.meta["screenshot"])
+    
+    def _parse_links(self, data):
+        # categories = self._get_categories(data.selector.css('a.navigation-item-link::text').getall())
+        main_categories_links = data.selector.xpath('//a[contains(@class, "navigation-item-link")]/@href').getall()
+        # sub_categories_links = data.selector.xpath('//a[not(contains(@class, "navigation-item-link"))]/@href').getall()
+
+        links =  main_categories_links #+ sub_categories_links
+
+        return links[0:2]
+        # for link in links:
+        #     data.follow(BASE_URL+link, callback=None)
+
+    def _iter_products(self, response):
+        # num = len(response.selector.xpath('//li[contains(@class, "products_grid")]').getall())
+        # yield {
+        #         'num_of_prods': num,
+        #         "url": response.url
+        #     }
+        #   inspect_response(data, self)
+        for products in response.selector.xpath('//li[contains(@class, "products_grid")]'):
+            item = KohlScraperItem()
+            # yield {
+            #     "product": products.xpath("./@id").get()
+            # }
+            item['id'] = products.xpath("./@id").get()
+            product_link = products.xpath('.//div[contains(@class, "prod_img_block")]/a/@href')
+
+            yield scrapy.Request(
+                url=BASE_URL+product_link.get(),
+                callback=self.parse_product,
+                cb_kwargs={'item': item}
+            )
+
+            # for product in product_links:
+                # yield {
+                #     'id': products.xpath("./@id").get()
+                # }
+                # item = KohlScraperItem()
+                # item['id'] = products.xpath("./@id").get()
+                # yield scrapy.Request(
+                #     url=BASE_URL+product.get(),
+                #     callback=self.parse_product,
+                #     cb_kwargs={'item': item}
+                # )
+
+    def parse_product(self, response, item):
+        item['name'] = response.xpath('//h1[contains(@class, "product-title")]/text()').get().strip()
+        # item['currencyUnit'] = re.findall('\$', response.xpath('[//p[contains(@class, "pdpprice-row2")] or //span[contains(@class, "pdpprice-row2")]]/text()').get().split())[0]
+        # item['currencyUnit'] = self._get_currency_unit(re.findall("\$", response.xpath('//ul[contains(@class, "pricingList")][//span or //p]/text()').get().strip())[0])
+
+        
+        # KohlSpider.product_url = BASE_URL + data.xpath('//div/a/@href')
+
+        item['seller'] = response.selector.xpath('//div[contains(@class, "sub-product-title")]//a/text()').get().strip()
+        item['shortDescription'] = response.selector.xpath('//div[contains(@class, "inner")][//p | //ul]').get()
+        # data.follow(product_url, callback=self._parse_product_page)
+        # for product_link in data.selector.xpath('//li[contains(@class, "products_grid")]/@id'):
+        
+        # print("##############################################################")
+        # print("##############################################################")
+        # print("##############################################################")
+        # print(data)
+
+        yield item
+        # for link in self._iter_products(data):
+            
+            
+
+    def _get_currency_unit(self, data):
+        if data is '$':
+            return 'USD'
+        else:
+            return 'EUR'
+
+        # return (seller, product_details)
