@@ -14,32 +14,40 @@ class ScrapersItem(Item):
 
 class WalmartScraperItem(Item):
     # define the fields for your item here like:
-    keyword = Field()
-    page = Field()
-    position = Field()
-    url = Field()
+    product_url = Field()
+    image_url = Field()
     id = Field()
-    type = Field()
     name = Field()
-    brand = Field()
-    averageRating = Field()
-    manufacturerName = Field()
-    shortDescription = Field()
-    thumbnailUrl = Field()
+    # brand = Field()
+    average_rating = Field()
+    # manufacturerName = Field()
+    description = Field()
+    # thumbnailUrl = Field()
     price = Field()
-    currencyUnit = Field()
+    time = Field()
+    # currencyUnit = Field()
 
 
 class KohlScraperItem(Item):
     # define the fields for your item here like:
-    keyword = Field()
-    page = Field()
+    product_url = Field()
+    image_url = Field()
+    id = Field()
     name = Field()
-    url = Field()
+    # brand = Field()
+    average_rating = Field()
+    # manufacturerName = Field()
+    description = Field()
+    # thumbnailUrl = Field()
     price = Field()
-    currencyUnit = Field()
-    shortDescription = Field()
-    position = Field()
+    time = Field()
+    # currencyUnit = Field()
+    
+    
+    
+    # currencyUnit = Field()
+    
+    # position = Field()
     
     # id = Field()
     # type = Field()
@@ -50,3 +58,16 @@ class KohlScraperItem(Item):
     # price = Field()
     # currencyUnit = Field()
 
+
+class TargetScraperItem(Item):
+    # define the fields for your item here like:
+    keyword = Field()
+    page = Field()
+    url = Field()
+    id = Field()
+    name = Field()
+    brand = Field()
+    averageRating = Field()
+    ratingCount = Field()
+    thumbnailUrl = Field()
+    price = Field()
