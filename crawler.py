@@ -33,7 +33,7 @@ app.conf.beat_schedule = {
     },
     'crawl-kohls': {
         'task': 'tasks.crawl_kohls',
-        'schedule': 1800,
+        'schedule': 10800,
     },
     'crawl-target': {
         'task': 'tasks.crawl_kohls',
