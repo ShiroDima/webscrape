@@ -42,32 +42,15 @@ class KohlScraperItem(Item):
     price = Field()
     time = Field()
     # currencyUnit = Field()
-    
-    
-    
-    # currencyUnit = Field()
-    
-    # position = Field()
-    
-    # id = Field()
-    # type = Field()
-    # brand = Field()
-    # averageRating = Field()
-    # manufacturerName = Field()
-    # thumbnailUrl = Field()
-    # price = Field()
-    # currencyUnit = Field()
-
 
 class TargetScraperItem(Item):
     # define the fields for your item here like:
-    keyword = Field()
-    page = Field()
-    url = Field()
+    product_url = Field()
+    image_url = Field()
     id = Field()
     name = Field()
-    brand = Field()
-    averageRating = Field()
-    ratingCount = Field()
-    thumbnailUrl = Field()
+    average_rating = Field()
+    description = Field()
     price = Field()
+    time = Field()
+    discount = Field()

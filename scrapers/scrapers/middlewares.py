@@ -71,7 +71,7 @@ class ScrapersDownloaderMiddleware:
     def process_request(self, request, spider):
         # Called for each request that goes through the downloader
         # middleware.
-
+        # request.
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object
