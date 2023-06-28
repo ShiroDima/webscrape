@@ -100,6 +100,7 @@ class WalmartSpider(scrapy.Spider):
                                      'proxy': get_proxy()
                                  },
             )
+            scraped.write(keyword)
 
 
     def parse_search_results(self, response):
