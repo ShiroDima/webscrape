@@ -3,9 +3,10 @@ import requests
 import json
 from urllib.parse import urlencode
 import os
+import re
 from dotenv.main import load_dotenv
 from ..items import TargetScraperItem
-
+from datetime import datetime
 
 class TargetSpider(scrapy.Spider):
     load_dotenv()
@@ -22,8 +23,20 @@ class TargetSpider(scrapy.Spider):
 
     def start_requests(self):
         # keyword_list = ['laptop', 'iphone']
-        keyword = self._get_keyword()
-        yield scrapy.Request("https://httpstat.us/200", callback=self.parse_products_lists, meta={'keyword': keyword})
+        keyword_list = self._get_keyword_list()
+        scraped = open("target_keywords/scraped.txt", 'a+')
+        for keyword in keyword_list:
+            try:
+                keyword = re.split(r"\d+.", keyword)[1].strip()
+            except IndexError:
+                keyword = re.split(r"\d+.", keyword)[0].strip()
+
+            key_enc = urlencode({"keyword": keyword.lower()})
+            if key_enc.split("=")[1] in scraped.readlines():
+                continue
+            yield scrapy.Request("https://httpstat.us/200", callback=self.parse_products_lists,
+                                 meta={'keyword': keyword.strip()}, dont_filter=True)
+            scraped.write(keyword)
 
     def parse_products_lists(self, response):
         item = TargetScraperItem()
@@ -40,6 +53,13 @@ class TargetSpider(scrapy.Spider):
 
         res = requests.get(api_url, params=payload)
         results = res.json()
+
+        print("###########################################################################################")
+        print("##########################################################################################")
+        print("##########################################################################################")
+        print(f"Scraping Keyword {keyword}")
+        print("#############################################")
+
         for product in results["search_results"]:
 
             try:
@@ -65,7 +85,7 @@ class TargetSpider(scrapy.Spider):
             try:
                 item["price"] = product["offers"]["primary"]["price"]
             except:
-                item["price"] = product["offers"]["primary"]["price"]
+                item["price"] = ""
 
             try:
                 item["discount"] = self._get_discount(product["offers"]["primary"])
@@ -82,9 +102,8 @@ class TargetSpider(scrapy.Spider):
             except:
                 item["average_rating"] = ""
 
-            # print("####################################")
-            # print(type(results).__name__)
-            # print("####################################")
+            item["time"] = datetime.now()
+
             yield item
 
 
@@ -112,3 +131,7 @@ class TargetSpider(scrapy.Spider):
                     else:
                         scraped.write(keyword + "\n")
                         return keyword
+
+    def _get_keyword_list(self):
+        with open("target_keywords/keywords.txt", "r") as keywords:
+            return keywords.readlines()
