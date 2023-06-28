@@ -1,3 +1,504 @@
-shoes
-tv
-bags
+1. Groceries
+Hair Care Sets
+2. Electronics
+3. Home decor
+Golf Gloves
+4. Appliances
+5. Clothing
+Creatine Supplements
+Cat Beds
+Water Filters
+Women's Dresses
+Bakeware Sets
+Camping Cookware
+Electric Razors
+Camping Tarps
+computer accessories
+computer harddrives
+computers
+6. Toys
+7. Beauty products
+8. Health and wellness items
+9. Baby supplies
+10. Pet supplies
+11. Furniture
+12. Sports equipment
+13. Outdoor gear
+14. Automotive products
+15. Party supplies
+16. Office supplies
+17. Books
+18. Movies
+19. Music
+20. Video games
+21. Cell phones
+22. Tablets
+23. Computers
+24. TVs
+25. Cameras
+26. Headphones
+27. Speakers
+28. Smart home devices
+29. Kitchen appliances
+30. Cookware
+31. Bedding
+32. Bath products
+33. Towels
+34. Furniture
+35. Home improvement tools
+36. Lighting fixtures
+37. Garden supplies
+38. Air purifiers
+39. Cleaning products
+40. Laundry items
+41. Personal care appliances
+42. Hair care products
+43. Skincare products
+44. Makeup
+45. Shaving products
+46. Vitamins and supplements
+47. Exercise equipment
+48. Fitness accessories
+49. Sports apparel
+50. Camping gear
+51. Hiking equipment
+52. Fishing supplies
+53. Bicycles
+54. Scooters
+55. Board games
+56. Puzzles
+57. Musical instruments
+58. Craft supplies
+59. Sewing machines
+60. Painting supplies
+61. School supplies
+62. Office furniture
+63. Party decorations
+64. Home security systems
+65. Cameras and surveillance equipment
+66. GPS navigation devices
+67. Car accessories
+68. Automotive batteries
+69. Motor oil
+70. Tires
+71. Power tools
+72. Hand tools
+73. Gym equipment
+74. Yoga mats
+75. Sports shoes
+76. Men's clothing
+77. Women's clothing
+78. Kids' clothing
+79. Shoes
+80. Accessories
+81. Jewelry
+82. Watches
+83. Handbags
+84. Wallets
+85. Sunglasses
+86. Luggage
+87. Backpacks
+88. Travel accessories
+89. School uniforms
+90. Baby clothing
+91. Diapers
+92. Baby gear (strollers, car seats, etc.)
+93. Baby toys
+94. Dog food
+95. Cat food
+96. Pet beds
+97. Pet toys
+98. Bird cages
+99. Small animal habitats
+100. Reptile supplies
+101. Fishing rods
+102. Golf clubs
+103. Tennis rackets
+104. Basketball hoops
+105. Soccer balls
+106. Baseball bats
+107. Camping tents
+108. Sleeping bags
+109. Hammocks
+110. Outdoor cooking equipment
+111. Grills and smokers
+112. Charcoal and propane
+113. Inflatable pools
+114. Pool toys
+115. Air mattresses
+116. Inflatable furniture
+117. Exercise bikes
+118. Treadmills
+119. Dumbbells
+120. Weight benches
+121. Resistance bands
+122. Yoga blocks
+123. Fitness trackers
+124. Bluetooth headphones
+125. Home theater systems
+126. Blu-ray players
+127. Digital cameras
+128. Wireless speakers
+
+129. Air conditioners
+130. Fans
+131. Heaters
+132. Humidifiers
+133. Electric blankets
+134. Camping chairs
+135. Picnic supplies
+136. Bottled water
+137. Cookbooks
+138. kitchen appliances
+139. Dinnerware sets
+140. Glassware
+141. Cookware sets
+142. Bakeware
+143. Small appliances (microwaves, blenders, etc.)
+144. Coffee makers
+145. Juicers
+146. Slow cookers
+147. Vacuum cleaners
+148. Laundry machines
+149. Irons
+150. Air fresheners
+151. Essential oils
+152. Garden furniture
+153. Patio umbrellas
+154. Gardening tools
+155. Fertilizers
+156. Planters
+157. Outdoor lighting
+158. BBQ accessories
+159. Grilling utensils
+160. Lawn mowers
+161. Insect repellents
+162. Ladders
+163. Paint supplies
+164. Plumbing fixtures
+165. Electrical supplies
+166. Shelving units
+167. Closet organizers
+168. Picture frames
+169. Wall décor
+170. Mirrors
+171. Clocks
+172. Candles
+173. Fragrances
+174. Bath accessories
+175. Shower curtains
+176. Robes
+177. Shoes racks
+178. Garment racks
+179. Desk organizers
+180. Printer ink cartridges
+181. Office chairs
+182. Paper products
+183. Writing instruments
+184. Calculators
+185. Novelty gifts
+186. Greeting cards
+187. Boarding passes holders
+188. Sunglasses
+189. Umbrellas
+190. Food storage containers
+191. Wine glasses
+192. Cooking utensils
+193. Baking supplies
+194. Tableware
+195. Party favors
+196. First aid kits
+197. Beauty tools
+198. Hair styling appliances
+199. Nail polish
+200. Sewing kits.
+hairwax
+laptops
+xbox
+playstation
+kitchen+utensils
+toys
+clothing
+collars
+leashes
+crate
+liners
+blankets
+aquarium
+pumps
+heaters
+phone+accessories
+thermometers
+crafting
+sewing
+knitting+supplies
+display+accessories
+glues
+gift
+craft+tape
+paint
+wood+working+tools
+musical+instruments
+appliances
+sewing+machines
+decor
+computer+display
+art+prints
+statues
+stationery
+tape
+duct+tape
+electrical+tape
+nail+polish+remover
+paint+remover
+baby+clothes
+handbags
+luggage
+jewellery
+watches
+footwear
+costumes
+cultural
+religious+wear
+wedding+clothes
+beauty
+hair+accessories
+safety+helmets
+eyewear
+doll+clothes
+mobile+phones
+electronic+accessories
+electronic+cables
+printers
+scanners
+fax+machines
+cameras
+optical+devices
+office+supplies
+film+supplies
+softwares
+video+games
+ebooks
+projectors
+furniture
+pest+control
+grills
+grilling+accessories
+hair+dryers
+electric+razors
+sunglasses
+reading+glasses
+contact+lenses
+fragrance
+toiletries
+lotion
+soap
+haircare
+body+paints
+nail+polish+remover
+water+dispensers
+laminators
+calculators
+paper
+office+supplies
+scooters
+binoculars
+tactical+knives
+children+accessories
+kitchen+appliances
+men+accessories
+women+accessories
+home+decor
+cleaning+supplies
+bedding
+office+decor
+greeting+cards
+Apparel
+Electronics
+Appliances
+Toys
+Home Decor
+Food & Grocery
+Garden Supplies
+Beauty Products
+Furniture
+Pet Supplies
+Sports Gear
+Musical Instruments
+Outdoor Recreation
+Baby Products
+Health & Wellness
+Jewelry & Watches
+Books, Movies, & Music
+Auto Parts & Accessories
+Party Supplies
+Office Supplies
+Shoes
+School Supplies
+Art & Craft Supplies
+Travel Bags & Luggage
+Vitamins & Supplements
+Fitness & Exercise
+Cleaning Supplies
+Baking Goods
+Hardware & Tools
+Handbags & Purses
+Fresh Flowers
+Air Conditioners
+Smart Home Devices
+Snacks & Candy
+Board Games
+Musical Equipment
+Kitchen Supplies
+Cell Phones & Accessories
+Hair Styling Products
+Winter Clothing
+Seasonal Decorations
+Skin Care Products
+Tires & Wheels
+Bicycles
+Swimwear
+Sunglasses
+Home Improvement Tools
+Baby Gear
+Gardening Tools
+Fragrances
+Watches
+Bluetooth Speakers
+Cookware
+Backpacks
+Hair Appliances
+Board Shorts
+Gardening Supplies
+Video Games
+Car Care Products
+Baby Clothing
+Bath & Body Products
+Hiking Gear
+Bedding Sets
+Craft Kits
+Exercise Equipment
+Laptop Accessories
+Camping Gear
+Fitness Trackers
+Grills & Outdoor Cooking
+Party Decorations
+Air Fryers
+Skincare Sets
+Golf Equipment
+Car Seats
+Lawn Tools
+Fragrance Sets
+Dash Cams
+Workout Apparel
+Sleepwear
+Robot Vacuums
+Candles
+RC Vehicles
+Oral Care Products
+Cookbooks
+Men's Shoes
+Backpacking Gear
+Sewing Machines
+Lawn Furniture
+Baby Toys
+Coffee Makers
+Makeup Products
+Athletic Shoes
+Outdoor Lighting
+Boarding Pass Holder
+Organic Food
+Hair Extensions
+Mens Accessories
+Dinnerware Sets
+Weightlifting Equipment
+Yoga Mats
+Hiking Boots
+Curtains
+Crock-Pots
+Fishing Gear
+Portable Chargers
+Mens Clothing
+Dinnerware Storage
+Camping Tents
+Hair Color Products
+Golf Clubs
+Dog Food
+Window Treatments
+Home Security Systems
+Womens Accessories
+Dinnerware Utensils
+Sleeping Bags
+Curling Irons
+Boxing Gloves
+Cat Supplies
+Vacuum Cleaners
+Women's Clothing
+Bakeware
+Sleeping Pads
+Straighteners
+Weightlifting Supplements
+Tennis Rackets
+Dog Collars
+Air Purifiers
+Men's Grooming Products
+Glassware Sets
+Backpacking Tents
+Hair Dryers
+Exercise Bands
+Basketball Hoops
+Bird Feeders
+Humidifiers
+Makeup Brushes
+Running Shoes
+Small Kitchen Appliances
+Mens Activewear
+Dinnerware Plates
+Hammocks
+Hair Styling Tools
+Protein Powders
+Golf Balls
+Cat Toys
+Robotic Mowers
+Womens Activewear
+Dinnerware Bowls
+Camping Stoves
+Curling Wands
+Weightlifting Gloves
+Tennis Balls
+Dog Beds
+Air Conditioner Filters
+Women's Swimwear
+Dinnerware Sets for Kids
+Camping Sleeping Bags
+Flat Irons
+Pre-Workout Supplements
+Golf Bags
+Cat Treats
+Doorbells
+Men's Swimwear
+Dinnerware Serving Pieces
+Fishing Tackle Boxes
+Hair Accessories
+Resistance Bands
+Golf Shoes
+Cat Litter
+Dehumidifiers
+Women's Shoes
+Cookware Sets
+Camping Chairs
+Electric Toothbrushes
+Basketball Shoes
+Air Fryer Accessories
+Makeup Palettes
+Running Apparel
+Dinnerware Storage Sets
+Sleeping Bag Liners
+Hair Removal Products
+Weightlifting Belts
+Tennis Shoes
+Dog Grooming Tools
+Smart Thermostats
+Men's Dress Shirts
+Dinnerware Sets for Two
+Camping Lanterns
