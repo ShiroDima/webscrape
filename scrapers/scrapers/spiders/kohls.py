@@ -50,7 +50,7 @@ class KohlSpider(scrapy.Spider):
     custom_settings = {
         'COLLECTION_NAME': 'walmart',
         'FEEDS': {
-            './data/kohls.csv': {
+            './data/run2/kohls.csv': {
                 'format': 'csv'
             }
         }
@@ -61,48 +61,89 @@ class KohlSpider(scrapy.Spider):
         # keyword_list = ['tv']  # , 'phones', 'grills', 'household items']
 
         # for keyword in keyword_list:
-        keyword = self._get_keyword()
-        max_pages = self._get_max_pages(BASE_SEARCH_URL.format(keyword))
-        if max_pages > 30:
-            max_pages = 50
+        keyword_list = self._get_keyword_list()
+        scraped = open("target_keywords/scraped.txt", 'a+')
 
-        yield scrapy.Request(
-            # url=BASE_URL+"/content/navigation.html",
-            url=BASE_SEARCH_URL.format(keyword),
-            callback=self._iter_products,
-            meta={
-                'proxy': get_proxy(),
-                'page': 1,
-                'max_pages': max_pages
-            }
-        )
+        for keyword in keyword_list:
+            try:
+                keyword = re.split(r"\d+.", keyword)[1].strip()
+            except IndexError:
+                keyword = re.split(r"\d+.", keyword)[0].strip()
+            key_enc = urlencode({"keyword": keyword.lower()})
+            if key_enc.split("=")[1] in scraped.readlines():
+                 continue
+            # max_pages = self._get_max_pages(walmart_search_url)
+            max_pages = self._get_max_pages(BASE_SEARCH_URL.format(keyword))
+            if max_pages > 20:
+                max_pages = 20
+            print("################################################################################")
+            print("################################################################################")
+            print(f"STARTING KEYWORD {keyword.upper()}")
+            print("########################################################")
+            scraped.write(keyword)
+            yield scrapy.Request(
+                # url=BASE_URL+"/content/navigation.html",
+                url=BASE_SEARCH_URL.format(keyword),
+                callback=self._iter_products,
+                meta={
+                    'proxy': get_proxy(),
+                    'page': 1,
+                    'max_pages': max_pages,
+                    'keyword': keyword
+                }
+            )
+            scraped.write(keyword)
 
 
     def _iter_products(self, response):
         page = response.meta["page"]
         max_pages = response.meta["max_pages"]
+        keyword = response.meta["keyword"]
         crawled_products_for_page = 0
         # next_page = response.xpath('//a[@title="Next Page"]/@href').get()
         num_products_to_crawl_for_page = len(response.selector.xpath('//li[contains(@class, "products_grid")]'))
-        print("########################################################")
-        print(f"Crawling Page {page}")
+        print("######################################################################################")
+        print("######################################################################################")
+        print(f"CRAWLING PAGE {page} OF {keyword.upper()}")
         print("########################################################")
 
         for product in response.selector.xpath('//li[contains(@class, "products_grid")]'):
             crawled_products_for_page += 1
             
             item = KohlScraperItem()
-            item['id'] = self._get_product_id(product.xpath("./@id").get())
+            try:
+                item['id'] = self._get_product_id(product.xpath("./@id").get())
+            except:
+                item['id'] = ""
+
             product_link = product.xpath('.//div[contains(@class, "prod_img_block")]/a/@href').get()
-            item['name'] = product.css('div.prod_nameBlock>p::text').get().strip()
-            item["product_url"] = BASE_URL+product_link
-            item["image_url"] = self._get_image_url(product.xpath('//img[@class="pmp-hero-img"]/@srcset').get())
+            try:
+
+                item["product_url"] = BASE_URL + product_link
+            except:
+                item["product_url"] = ""
+
+            try:
+                item['name'] = product.css('div.prod_nameBlock>p::text').get().strip()
+            except:
+                item['name'] = ""
+
+            try:
+                item["image_url"] = self._get_image_url(product.xpath('//img[@class="pmp-hero-img"]/@srcset').get())
+            except:
+                item["image_url"] = ""
+
             try:
                 item["price"] = re.sub("\$", "", product.css('div.prod_priceBlock>span.prod_price_amount::text').get())
             except:
                 item["price"] = ""
             # item["average_rating"] = self._get_rating(product.css('span.prod_ratingImg>a.stars::attr(title)').get())
-            item["average_rating"] = self._get_rating(product.css('span.prod_ratingImg>a.stars::attr(title)').get())
+            try:
+                item["average_rating"] = self._get_rating(product.css('span.prod_ratingImg>a.stars::attr(title)').get())
+            except:
+                item["average_rating"] = ""
+
+            item["time"] = datetime.now()
 
             yield scrapy.Request(
                 url=BASE_URL + product_link,
@@ -110,6 +151,9 @@ class KohlSpider(scrapy.Spider):
                 cb_kwargs={
                     'item': item,
                 },
+                # meta={
+                #     "proxy
+                # }
             )
 
         if crawled_products_for_page==num_products_to_crawl_for_page and page < max_pages:
@@ -118,9 +162,11 @@ class KohlSpider(scrapy.Spider):
                 callback=self._iter_products,
                 meta={
                     'page': page+1,
-                    'max_pages': max_pages
+                    'max_pages': max_pages,
+                    'keyword': keyword,
+                    'proxy': get_proxy()
                 },
-                dont_filter=True
+                # dont_filter=True
             )
 
         
@@ -142,7 +188,7 @@ class KohlSpider(scrapy.Spider):
             options=options
         )
         print("#################################################################################################")
-        print("Getting Max Pages")
+        print("GETTING MAX PAGES")
         print("#################################################################################################")
         browser.get(url)
         max_pages = re.findall("\d+", browser.find_element(By.CSS_SELECTOR, 'div.totalPages').text)[0]
@@ -184,7 +230,7 @@ class KohlSpider(scrapy.Spider):
             options=options
         )
         print("#################################################################################################")
-        print("Getting URL for the next page")
+        print("GETTING URL FOR THE NEXT PAGE")
         print("#################################################################################################")
         try:
             browser.get(prev_page_url)
@@ -213,36 +259,9 @@ class KohlSpider(scrapy.Spider):
                         scraped.write(keyword + "\n")
                         return keyword
 
-    # def _go_to_next_page(self, response, page):
-    #     page += 1
-    #     print("#################################################################################################")
-    #     print("This should be firing")
-    #     yield scrapy.Request(
-    #                 url=self._get_next_page_url(response.url),
-    #                 callback=self._iter_products,
-    #                 meta={
-    #                     'page': page
-    #                 }
-    #             )
-                
 
-    # def _load_product_page(self, product_url):
-    #     wait = WebDriverWait(browser, 20)
-    #     self.browser.get(product_url)
-    #     img_frame = self.browser.find_element(By.CSS_SELECTOR, 'img.pdp-image-main-img')
-    #     span_frame = self.browser.find_element(By.XPATH, '//span[@class="pdpprice-row2"]/span/text()')
-    #     img_frame = wait.until(
-    #         EC.visibility_of(img_frame)
-    #     )
-    #     wait.until(
-    #         EC.visibility_of_element_located((By.CLASS_NAME, "pdp-main-bazarvoice-ratings"))
-    #     )
-    #     # wait.until(
-    #     #     EC.visibility_of(span_frame)
-    #     # )
-    #     # self.browser.quit()
-    #     return img_frame
 
-    # def _close_browser(self):
-    #     self.browser.quit()
+    def _get_keyword_list(self):
+        with open("walmart_keywords/keywords.txt", "r") as keywords:
+            return keywords.readlines()
 
