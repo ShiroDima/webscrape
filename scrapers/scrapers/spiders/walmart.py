@@ -70,38 +70,59 @@ class WalmartSpider(scrapy.Spider):
         # keyword_list = ['tires']  # , 'phones', 'grills', 'household items']
         # for keyword in keyword_list:
         # keyword = self._get_keyword()
-        keyword_list = self._get_keyword_list()
-        scraped = open("target_keywords/scraped.txt", 'a+')
-        for keyword in keyword_list:
-            try:
-                keyword = re.split(r"\d+.", keyword)[1].strip()
-            except IndexError:
-                keyword = re.split(r"\d+.", keyword)[0].strip()
-            key_enc = urlencode({"keyword": keyword.lower()})
-            if key_enc.split("=")[1] in scraped.readlines():
-                continue
-            payload = {'q': keyword,
-                       #    'sort': 'best_seller',
-                       'page': 1, 'affinityOverride': 'default'
-                       }
-            walmart_search_url = 'https://www.walmart.com/search?' + urlencode(payload)
-            # max_pages = self._get_max_pages(walmart_search_url)
-            print("#######################################################")
-            print("#######################################################")
-            print(f"SCRAPING KEYWORD {keyword.upper()}")
-            print("##################################")
-            scraped.write(keyword)
-            yield scrapy.Request(url=walmart_search_url,
-                                 callback=self.parse_search_results,
-                                 meta={
-                                     'keyword': keyword,
-                                     'page': 1,
-                                     # 'max_pages': int(max_pages),
-                                     'proxy': get_proxy()
-                                 },
-            )
-            scraped.write(keyword)
+        # keyword_list = self._get_keyword_list()
+        # scraped = open("target_keywords/scraped.txt", 'a+')
+        # for keyword in keyword_list:
+        #     try:
+        #         keyword = re.split(r"\d+.", keyword)[1].strip()
+        #     except IndexError:
+        #         keyword = re.split(r"\d+.", keyword)[0].strip()
+        #     key_enc = urlencode({"keyword": keyword.lower()})
+        #     if key_enc.split("=")[1] in scraped.readlines():
+        #         continue
+        #     payload = {'q': keyword,
+        #                #    'sort': 'best_seller',
+        #                'page': 1, 'affinityOverride': 'default'
+        #                }
+        #     walmart_search_url = 'https://www.walmart.com/search?' + urlencode(payload)
+        #     # max_pages = self._get_max_pages(walmart_search_url)
+        #     print("#######################################################")
+        #     print("#######################################################")
+        #     print(f"SCRAPING KEYWORD {keyword.upper()}")
+        #     print("##################################")
+        #     scraped.write(keyword)
+        #     yield scrapy.Request(url=walmart_search_url,
+        #                          callback=self.parse_search_results,
+        #                          meta={
+        #                              'keyword': keyword,
+        #                              'page': 1,
+        #                              # 'max_pages': int(max_pages),
+        #                              'proxy': get_proxy()
+        #                          },
+        #     )
+        #     scraped.write(keyword)
 
+        keyword = self._get_keyword()
+        payload = {'q': keyword,
+                   #    'sort': 'best_seller',
+                   'page': 1, 'affinityOverride': 'default'
+                   }
+        walmart_search_url = 'https://www.walmart.com/search?' + urlencode(payload)
+        # max_pages = self._get_max_pages(walmart_search_url)
+        print("#######################################################")
+        print("#######################################################")
+        print(f"SCRAPING KEYWORD {keyword.upper()}")
+        print("##################################")
+        scraped.write(keyword)
+        yield scrapy.Request(url=walmart_search_url,
+                             callback=self.parse_search_results,
+                             meta={
+                                 'keyword': keyword,
+                                 'page': 1,
+                                 # 'max_pages': int(max_pages),
+                                 'proxy': get_proxy()
+                             },
+        )
 
     def parse_search_results(self, response):
 
@@ -211,16 +232,24 @@ class WalmartSpider(scrapy.Spider):
     def _get_average_rating(self, data):
         return re.sub("\(", "", re.sub("\)", "", data))
 
-    # def _get_keyword(self):
-    #     # scraped = open("walmart_keywords/scraped.txt", 'r').read()
-    #     with open("walmart_keywords/keywords.txt", "r") as keywords:
-    #         with open("walmart_keywords/scraped.txt", "a+") as scraped:
-    #             for keyword in keywords.readlines():
-    #                 if keyword in scraped.readlines():
-    #                     continue
-    #                 else:
-    #                     scraped.write(keyword+"\n")
-    #                     return keyword
+
+    def _get_keyword(self):
+        # scraped = open("walmart_keywords/scraped.txt", 'r').read()
+        with open("walmart_keywords/keywords.txt", "r") as keywords:
+            with open("walmart_keywords/scraped.txt", "a+") as scraped:
+                scraped_txts = scraped.readlines()
+                for keyword in keywords.readlines():
+                    try:
+                        keyword = re.split(r"\d+.", keyword)[1].strip()
+                    except IndexError:
+                        keyword = re.split(r"\d+.", keyword)[0].strip()
+                        key_enc = urlencode({"keyword": keyword.lower()})
+                    if key_enc.split("=")[1] in scraped_txts:
+                        continue
+                    else:
+                        scraped.write(keyword)
+                        return keyword
+
 
     def _get_keyword_list(self):
         with open("walmart_keywords/keywords.txt", "r") as keywords:

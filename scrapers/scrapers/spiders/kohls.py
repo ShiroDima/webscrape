@@ -271,8 +271,14 @@ class KohlSpider(scrapy.Spider):
         # scraped = open("walmart_keywords/scraped.txt", 'r').read()
         with open("kohls_keywords/keywords.txt", "r") as keywords:
             with open("kohls_keywords/scraped.txt", "a+") as scraped:
+                scraped_txts = scraped.readlines()
                 for keyword in keywords.readlines():
-                    if keyword in scraped.readlines():
+                    try:
+                        keyword = re.split(r"\d+.", keyword)[1].strip()
+                    except IndexError:
+                        keyword = re.split(r"\d+.", keyword)[0].strip()
+                        key_enc = urlencode({"keyword": keyword.lower()})
+                    if key_enc.split("=")[1] in scraped_txts:
                         continue
                     else:
                         scraped.write(keyword)
