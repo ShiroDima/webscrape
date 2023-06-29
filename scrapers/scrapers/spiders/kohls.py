@@ -20,7 +20,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 BASE_URL = "https://www.kohls.com"
 
-API_KEY = "a137708d-feb6-45b7-8020-159f63938342"
+# API_KEY = "a137708d-feb6-45b7-8020-159f63938342"
 
 BASE_SEARCH_URL = 'https://www.kohls.com/search.jsp?submit-search=web-regular&search={}&spa=2&kls_sbp=24887225120402166131371483924801720822'
 
@@ -277,11 +277,15 @@ class KohlSpider(scrapy.Spider):
                         keyword = re.split(r"\d+.", keyword)[1].strip()
                     except IndexError:
                         keyword = re.split(r"\d+.", keyword)[0].strip()
-                        key_enc = urlencode({"keyword": keyword.lower()})
-                    if key_enc.split("=")[1] in scraped_txts:
+                    if "+" in keyword:
+                        tmp = keyword.split("+")
+                        keyword = " ".join(tmp)
+                        keyword = keyword.lower()
+                    # key_enc = urlencode({"keyword": keyword.lower()})
+                    if keyword in scraped_txts:
                         continue
                     else:
-                        scraped.write(keyword)
+                        scraped.write(keyword.lower() + "\n")
                         return keyword
 
 
