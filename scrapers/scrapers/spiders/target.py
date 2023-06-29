@@ -110,5 +110,5 @@ class TargetSpider(scrapy.Spider):
                     if keyword in scraped.readlines():
                         continue
                     else:
-                        scraped.write(keyword + "\n")
+                        scraped.write(keyword)
                         return keyword
