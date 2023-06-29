@@ -64,36 +64,55 @@ class KohlSpider(scrapy.Spider):
         keyword_list = self._get_keyword_list()
         scraped = open("target_keywords/scraped.txt", 'a+')
 
-        for keyword in keyword_list:
-            try:
-                keyword = re.split(r"\d+.", keyword)[1].strip()
-            except IndexError:
-                keyword = re.split(r"\d+.", keyword)[0].strip()
-            key_enc = urlencode({"keyword": keyword.lower()})
-            if key_enc.split("=")[1] in scraped.readlines():
-                 continue
-            # max_pages = self._get_max_pages(walmart_search_url)
-            max_pages = self._get_max_pages(BASE_SEARCH_URL.format(keyword))
-            if max_pages > 20:
-                max_pages = 20
-            print("################################################################################")
-            print("################################################################################")
-            print(f"STARTING KEYWORD {keyword.upper()}")
-            print("########################################################")
-            scraped.write(keyword)
-            yield scrapy.Request(
-                # url=BASE_URL+"/content/navigation.html",
-                url=BASE_SEARCH_URL.format(keyword),
-                callback=self._iter_products,
-                meta={
-                    'proxy': get_proxy(),
-                    'page': 1,
-                    'max_pages': max_pages,
-                    'keyword': keyword
-                }
-            )
-            scraped.write(keyword)
-
+        # for keyword in keyword_list:
+        #     try:
+        #         keyword = re.split(r"\d+.", keyword)[1].strip()
+        #     except IndexError:
+        #         keyword = re.split(r"\d+.", keyword)[0].strip()
+        #     key_enc = urlencode({"keyword": keyword.lower()})
+        #     if key_enc.split("=")[1] in scraped.readlines():
+        #          continue
+        #     # max_pages = self._get_max_pages(walmart_search_url)
+        #     max_pages = self._get_max_pages(BASE_SEARCH_URL.format(keyword))
+        #     if max_pages > 20:
+        #         max_pages = 20
+        #     print("################################################################################")
+        #     print("################################################################################")
+        #     print(f"STARTING KEYWORD {keyword.upper()}")
+        #     print("########################################################")
+        #     scraped.write(keyword)
+        #     yield scrapy.Request(
+        #         # url=BASE_URL+"/content/navigation.html",
+        #         url=BASE_SEARCH_URL.format(keyword),
+        #         callback=self._iter_products,
+        #         meta={
+        #             'proxy': get_proxy(),
+        #             'page': 1,
+        #             'max_pages': max_pages,
+        #             'keyword': keyword
+        #         }
+        #     )
+        #     scraped.write(keyword)
+        keyword = self._get_keyword()
+        max_pages = self._get_max_pages(BASE_SEARCH_URL.format(keyword))
+        if max_pages > 20:
+            max_pages = 20
+        print("################################################################################")
+        print("################################################################################")
+        print(f"STARTING KEYWORD {keyword.upper()}")
+        print("########################################################")
+        scraped.write(keyword)
+        yield scrapy.Request(
+            # url=BASE_URL+"/content/navigation.html",
+            url=BASE_SEARCH_URL.format(keyword),
+            callback=self._iter_products,
+            meta={
+                'proxy': get_proxy(),
+                'page': 1,
+                'max_pages': max_pages,
+                'keyword': keyword
+            }
+        )
 
     def _iter_products(self, response):
         page = response.meta["page"]
@@ -256,7 +275,7 @@ class KohlSpider(scrapy.Spider):
                     if keyword in scraped.readlines():
                         continue
                     else:
-                        scraped.write(keyword + "\n")
+                        scraped.write(keyword)
                         return keyword
 
 
