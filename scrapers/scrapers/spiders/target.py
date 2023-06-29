@@ -34,6 +34,7 @@ class TargetSpider(scrapy.Spider):
             key_enc = urlencode({"keyword": keyword.lower()})
             if key_enc.split("=")[1] in scraped.readlines():
                 continue
+            scraped.write(keyword)
             yield scrapy.Request("https://httpstat.us/200", callback=self.parse_products_lists,
                                  meta={'keyword': keyword.strip()}, dont_filter=True)
             scraped.write(keyword)
