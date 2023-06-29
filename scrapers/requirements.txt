@@ -3,3 +3,5 @@ scrapy
 selenium
 webdriver-manager
 python-dotenv
+celery
+redis
