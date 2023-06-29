@@ -210,7 +210,7 @@ class KohlSpider(scrapy.Spider):
                     if keyword in scraped.readlines():
                         continue
                     else:
-                        scraped.write(keyword + "\n")
+                        scraped.write(keyword)
                         return keyword
 
     # def _go_to_next_page(self, response, page):
